@@ -38,15 +38,15 @@ public class ch5_1_2_低位优先的字符串排序 {
      */
     private static void sort(String[] arr, int w) {
         int N = arr.length;
-        String[] aux = new String[N];
+        String[] aux = new String[N];//访问N次
         int R = 256;
         //进行w次键索引计数排序
-        for (int i = w - 1; i >= 0; i--) {
-            int[] count = new int[R + 1];
-            for (String s : arr) count[s.charAt(i) + 1]++;
-            for (int j = 0; j < R; j++) count[j + 1] += count[j];
-            for (String s : arr) aux[count[s.charAt(i)]++] = s;
-            System.arraycopy(aux, 0, arr, 0, N);
+        for (int i = w - 1; i >= 0; i--) {//每轮循环访问7N+3R+1次
+            int[] count = new int[R + 1];//访问R+1次
+            for (String s : arr) count[s.charAt(i) + 1]++;//访问2N次
+            for (int j = 0; j < R; j++) count[j + 1] += count[j];//访问2R次
+            for (String s : arr) aux[count[s.charAt(i)]++] = s;//访问3N次
+            System.arraycopy(aux, 0, arr, 0, N);//访问2N次
         }
     }
 }
