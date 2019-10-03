@@ -143,14 +143,14 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public boolean contains(String key) {
-        return false;
+        int length = search(root, key, 0, 0);
+        return key.length() == length;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return root == null;
     }
-
 
     private static class Node {
         private Object val;
