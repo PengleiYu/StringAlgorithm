@@ -1,5 +1,9 @@
 package com.company.ch5_2_单词查找树;
 
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class TrieST<Value> implements StringST<Value> {
     private static final int R = 256;
     private Node root;
@@ -58,6 +62,31 @@ public class TrieST<Value> implements StringST<Value> {
     }
 
     @Override
+    public Iterable<String> keys() {
+        return keysWithPrefix("");
+    }
+
+    @Override
+    public Iterable<String> keysWithPrefix(String s) {
+        Queue<String> queue = new LinkedList<>();
+        collect(get(root, s, 0), s, queue);//找到前缀终止的节点，然后开始搜集
+        return queue;
+    }
+
+    private void collect(Node x, String pre, Queue<String> q) {
+        if (x == null) return;
+        if (x.val != null) q.add(pre);
+        for (char c = 0; c < R; c++)
+            collect(x.next[c], pre + c, q);
+    }
+
+    @Override
+    public Iterable<String> keysThatMatch(String s) {
+        return null;
+    }
+
+
+    @Override
     public void delete(String key) {
 
     }
@@ -77,20 +106,6 @@ public class TrieST<Value> implements StringST<Value> {
         return null;
     }
 
-    @Override
-    public Iterable<String> keysWithPrefix(String s) {
-        return null;
-    }
-
-    @Override
-    public Iterable<String> keysThatMatch(String s) {
-        return null;
-    }
-
-    @Override
-    public Iterable<String> keys() {
-        return null;
-    }
 
     private static class Node {
         private Object val;
