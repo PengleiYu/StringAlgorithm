@@ -5,7 +5,7 @@ package com.company.ch5_2_单词查找树;
  */
 public interface StringST<Value> {
 
-    void put(String key, Value value);
+    void put(String key, Value val);
 
     Value get(String key);
 
