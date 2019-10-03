@@ -121,7 +121,24 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public void delete(String key) {
+        root = delete(root, key, 0);
+    }
 
+    private Node delete(Node x, String key, int d) {
+        if (x == null) return null;
+        if (d == key.length())//要删除的键
+            x.val = null;//该节点改为非键节点(之前可能为键节点，也可能不是)
+        else {
+            char c = key.charAt(d);
+            x.next[c] = delete(x.next[c], key, d + 1);//向下递归
+        }
+
+        if (x.val != null) return x;//键节点返回
+
+        for (char c = 0; c < R; c++)//非键节点需要检查子节点
+            if (x.next[c] != null) return x;//有子节点的非键节点返回
+
+        return null;//没有子节点的非键节点需要删除
     }
 
     @Override
