@@ -1,8 +1,11 @@
 package com.company.ch5_2_单词查找树;
 
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TrieST<Value> implements StringST<Value> {
     private static final int R = 256;
@@ -32,7 +35,7 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public void put(String key, Value val) {
-        put(root, key, val, 0);
+        root = put(root, key, val, 0);
     }
 
     private Node put(Node x, String key, Value val, int d) {
@@ -155,5 +158,40 @@ public class TrieST<Value> implements StringST<Value> {
     private static class Node {
         private Object val;
         private Node[] next = new Node[R];
+    }
+
+    public static void main(String[] args) {
+        String[] inputs = {
+                "she",
+                "sells",
+                "sea",
+                "shells",
+                "by",
+                "the",
+                "sea",
+                "shore",
+        };
+        TrieST<Integer> trieST = new TrieST<>();
+        //init
+        Arrays.stream(inputs).forEach((s) -> trieST.put(s, s.hashCode()));
+        //size，isEmpty
+        System.out.println(String.format("size = %d, isEmpty: %s",
+                trieST.size(), trieST.isEmpty()));
+        //keyWithPrefix
+        Iterable<String> strings1 = trieST.keysWithPrefix("");
+        System.out.println(String.join(",", strings1));
+        //keyWithPrefix
+        Iterable<String> strings2 = trieST.keysWithPrefix("sh");
+        System.out.println(String.join(",", strings2));
+        //longestPrefix
+        String join3 = Stream.of("she", "shell", "shellsort", "shelters")
+                .map(s -> s + " -> " + trieST.longestPrefixOf(s))
+                .collect(Collectors.joining(","));
+        System.out.println(join3);
+        // delete
+        String keys1 = String.join(",", trieST.keys());
+        trieST.delete("shells");
+        String keys2 = String.join(",", trieST.keys());
+        System.out.println(keys1 + " -> " + keys2);
     }
 }
