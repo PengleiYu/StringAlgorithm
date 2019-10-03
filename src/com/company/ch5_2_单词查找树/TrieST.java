@@ -82,7 +82,27 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public Iterable<String> keysThatMatch(String s) {
-        return null;
+        Queue<String> queue = new LinkedList<>();
+        collect(root, "", s, queue);
+        return queue;
+    }
+
+    /**
+     * 模式匹配
+     *
+     * @param pat 模式，仅支持.符号
+     */
+    private void collect(Node x, String pre, String pat, Queue<String> q) {
+        int d = pre.length();
+        if (x == null) return;
+        if (d == pat.length()) {
+            if (x.val != null) q.add(pre);
+            return;
+        }
+        char next = pat.charAt(d);
+        for (char c = 0; c < R; c++)
+            if (next == '.' || c == next)
+                collect(x.next[c], pre + c, pat, q);
     }
 
 
