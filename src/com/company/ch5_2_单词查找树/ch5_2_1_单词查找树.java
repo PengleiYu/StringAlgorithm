@@ -36,6 +36,10 @@ public class ch5_2_1_单词查找树 {
                 .map(s -> s + " -> " + trieST.longestPrefixOf(s))
                 .collect(Collectors.joining(","));
         System.out.println(join3);
+        //keysThatMatch
+        Iterable<String> keysThatMatch = trieST.keysThatMatch("s..");
+        System.out.println("KeysThatMatch:");
+        System.out.println(String.join(",", keysThatMatch));
         // delete
         String keys1 = String.join(",", trieST.keys());
         trieST.delete("shells");
@@ -76,7 +80,7 @@ public class ch5_2_1_单词查找树 {
 
         private Node put(Node x, String key, Value val, int d) {
             if (x == null) x = new Node();
-            if (d == key.length()) {
+            if (d == key.length()) {//这里决定了root为空节点，因为非空key长度大于0
                 x.val = val;
                 return x;
             }
